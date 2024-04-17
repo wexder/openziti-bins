@@ -108,28 +108,28 @@ in
         WorkingDirectory = "/var/lib/ziti";
         LimitNOFILE = 65535;
 
-        # ExecStartPre =
-        #   let
-        #     preScript = pkgs.writeShellApplication {
-        #       name = "ziti-edge-tunnel-startPre.sh";
-        #       text = ''
-        #         mkdir -p ${escapeShellArg cfg.identityDir}
-        #
-        #         echo "Processing $(fd -e jwt . identity | wc -l) JWT enrollment token(s)..."
-        #         # shellcheck disable=SC1004
-        #         fd -e jwt . identity/ -x \
-        #           bash -c ' \
-        #             echo "Enrolling JWT {}" \
-        #               && ziti-edge-tunnel enroll --jwt {} --identity {.}.json \
-        #               && echo "Enrolled JWT {} as identity {.}.json" \
-        #               && echo "Cleaning up JWT {}" \
-        #               && rm -v {} \
-        #           '
-        #         chmod 0400 identity/*.json || true
-        #       '';
-        #     };
-        #   in
-        #   "${preScript}/bin/ziti-edge-tunnel-startPre.sh";
+        ExecStartPre =
+          let
+            preScript = pkgs.writeShellApplication {
+              name = "ziti-edge-tunnel-startPre.sh";
+              text = ''
+                mkdir -p ${escapeShellArg cfg.identityDir}
+
+                echo "Processing $(fd -e jwt . identity | wc -l) JWT enrollment token(s)..."
+                # shellcheck disable=SC1004
+                fd -e jwt . identity/ -x \
+                  bash -c ' \
+                    echo "Enrolling JWT {}" \
+                      && ziti-edge-tunnel enroll --jwt {} --identity {.}.json \
+                      && echo "Enrolled JWT {} as identity {.}.json" \
+                      && echo "Cleaning up JWT {}" \
+                      && rm -v {} \
+                  '
+                chmod 0400 identity/*.json || true
+              '';
+            };
+          in
+          "${preScript}/bin/ziti-edge-tunnel-startPre.sh";
 
         ExecStart =
           let
