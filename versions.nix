@@ -1,9 +1,16 @@
-pkgs: let
+pkgs:
+let
   inherit (pkgs.lib) fakeSha256;
-in {
+in
+{
   state = {
     srcZiti = rec {
-      latest = v0-27-5;
+      latest = v1-0-0;
+
+      v1-0-0 = {
+        version = "1.0.0";
+        hash = "sha256-C9wVfmjb8nE10Zlfa0MJduUy86L9CEIPMDsJx7MwAwk=";
+      };
 
       v0-27-5 = {
         version = "0.27.5";
@@ -32,7 +39,12 @@ in {
     };
 
     srcBinZiti = rec {
-      latest = v0-27-5;
+      latest = v1-0-0;
+
+      v1-0-0 = {
+        version = "1.0.0";
+        hash = "sha256-C9wVfmjb8nE10Zlfa0MJduUy86L9CEIPMDsJx7MwAwk=";
+      };
 
       v0-27-5 = {
         version = "0.27.5";
@@ -60,11 +72,14 @@ in {
       };
     };
 
-    srcBinZitiEdgeTunnel = let
-    in rec {
-
+    srcBinZitiEdgeTunnel = {
       x86_64-linux = rec {
-        latest = v0-21-3;
+        latest = v1-0-0;
+
+        v1-0-0 = {
+          version = "0.21.3";
+          hash = "sha256-O9vA08WVEond+R447ZLyYBgDSaj2VHp+5C20FxxYWUc=";
+        };
 
         v0-21-3 = {
           version = "0.21.3";
