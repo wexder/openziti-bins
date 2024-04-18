@@ -99,7 +99,7 @@ in
       startLimitIntervalSec = 0;
       startLimitBurst = 0;
 
-      path = with pkgs; [ bash coreutils fd gnugrep gnused iproute2 ziti-edge-tunnel ];
+      path = with pkgs; [ bash coreutils fd gnugrep gnused iproute2 ];
 
       serviceConfig = {
         Restart = "always";
@@ -120,7 +120,7 @@ in
                 fd -e jwt . identity/ -x \
                   bash -c ' \
                     echo "Enrolling JWT {}" \
-                      && ziti-edge-tunnel enroll --jwt {} --identity {.}.json \
+                      && ${cfg.package} enroll --jwt {} --identity {.}.json \
                       && echo "Enrolled JWT {} as identity {.}.json" \
                       && echo "Cleaning up JWT {}" \
                       && rm -v {} \
@@ -136,7 +136,7 @@ in
             script = pkgs.writeShellApplication {
               name = "ziti-edge-tunnel";
               text = ''
-                exec ${ziti-edge-tunnel}/bin/ziti-edge-tunnel run \
+                exec ${cfg.package}/bin/ziti-edge-tunnel run \
                   --identity-dir identity \
                   --verbose ${escapeShellArg (toString cfg.verbosity)} \
                   --refresh ${escapeShellArg (toString cfg.refresh)}
